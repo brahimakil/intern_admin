@@ -1,0 +1,52 @@
+/* Placeholder Page Styles */
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.description {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0 0 2rem 0;
+}
+
+.placeholder {
+  background: white;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder p {
+  font-size: 1.125rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+  }
+
+  .placeholder {
+    padding: 2rem 1.5rem;
+  }
+
+  .placeholder p {
+    font-size: 1rem;
+  }
+}
+
