@@ -1,7 +1,8 @@
 // API service for NestJS backend - Uses Firebase Auth token
 import { auth } from '../firebase/config';
 
-const API_URL = 'http://localhost:3000';
+// Use environment variable or fallback to localhost
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 class ApiService {
   private async getAuthToken(): Promise<string | null> {
