@@ -14,7 +14,7 @@ import StudentsPage from './pages/StudentsPage';
 import StudentFormPage from './pages/StudentFormPage';
 import StudentDetailsPage from './pages/StudentDetailsPage';
 import ApplicationsPage from './pages/ApplicationsPage';
-import SettingsPage from './pages/SettingsPage';
+import ApplicationFormPage from './pages/ApplicationFormPage';
 import CompanyInternshipsPage from './pages/CompanyInternshipsPage';
 
 /**
@@ -147,10 +147,18 @@ function App() {
             }
           />
           <Route
-            path="/settings"
+            path="/applications/new"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <SettingsPage />
+                <ApplicationFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/applications/:id/edit"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ApplicationFormPage />
               </ProtectedRoute>
             }
           />

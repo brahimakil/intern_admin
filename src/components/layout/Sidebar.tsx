@@ -7,7 +7,6 @@ import {
   Briefcase,
   Users,
   FileText, 
-  Settings,
   LogOut
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
@@ -40,7 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { name: 'Internships', icon: Briefcase, path: '/internships' },
     { name: 'Students', icon: Users, path: '/students' },
     { name: 'Applications', icon: FileText, path: '/applications' },
-    { name: 'Settings', icon: Settings, path: '/settings' },
   ];
 
   return (

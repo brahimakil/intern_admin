@@ -47,12 +47,55 @@ export interface Student {
 
 export interface Application {
   id: string;
-  userId: string;
-  studentId?: string;
+  studentId: string;
   internshipId: string;
   companyId: string;
   status: 'pending' | 'accepted' | 'rejected';
-  appliedAt: Date;
+  coverLetter: string;
+  resumeUrl: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  projectDescription: string;
+  notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  // Populated fields from backend
+  student?: {
+    id: string;
+    fullName: string;
+    email: string;
+  };
+  internship?: {
+    id: string;
+    title: string;
+  };
+  company?: {
+    id: string;
+    name: string;
+  };
+}
+
+export interface CreateApplicationDto {
+  studentId: string;
+  internshipId: string;
+  companyId: string;
+  status?: 'pending' | 'accepted' | 'rejected';
+  coverLetter: string;
+  resumeUrl: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  projectDescription: string;
+  notes?: string;
+}
+
+export interface UpdateApplicationDto {
+  status?: 'pending' | 'accepted' | 'rejected';
+  coverLetter?: string;
+  resumeUrl?: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
+  projectDescription?: string;
+  notes?: string;
 }
 
 export interface AuthContextType {
@@ -69,4 +112,20 @@ export interface DashboardStats {
   activeCompanies: number;
   openInternships: number;
   totalApplications: number;
+  pendingApplications: number;
+  acceptedApplications: number;
+  rejectedApplications: number;
+  recentApplications: number;
+  recentActivities: RecentActivity[];
+  applicationTrends: number[];
+  trendLabels: string[];
+}
+
+export interface RecentActivity {
+  id: string;
+  type: string;
+  studentName: string;
+  internshipTitle: string;
+  status: string;
+  date: string;
 }
