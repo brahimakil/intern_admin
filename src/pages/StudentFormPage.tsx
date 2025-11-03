@@ -18,6 +18,8 @@ const StudentFormPage: React.FC = () => {
   const [error, setError] = useState('');
   const [photoPreview, setPhotoPreview] = useState<string>('');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [cvType, setCvType] = useState<'upload' | 'link'>('upload');
   
   const [formData, setFormData] = useState({
     email: '',
@@ -25,6 +27,7 @@ const StudentFormPage: React.FC = () => {
     fullName: '',
     major: '',
     profilePhotoUrl: '',
+    cvUrl: '',
     status: 'active' as 'active' | 'inactive',
   });
 
@@ -44,10 +47,17 @@ const StudentFormPage: React.FC = () => {
         fullName: data.fullName || '',
         major: data.major || '',
         profilePhotoUrl: data.profilePhotoUrl || '',
+        cvUrl: data.cvUrl || '',
         status: data.status || 'active',
       });
       if (data.profilePhotoUrl) {
         setPhotoPreview(data.profilePhotoUrl);
+      }
+      // Check if CV is a link or file
+      if (data.cvUrl) {
+        if (data.cvUrl.startsWith('http')) {
+          setCvType('link');
+        }
       }
     } catch (err) {
       console.error('Error fetching student:', err);
@@ -83,6 +93,23 @@ const StudentFormPage: React.FC = () => {
     setFormData({ ...formData, profilePhotoUrl: '' });
   };
 
+  const handleCvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('CV size should be less than 5MB');
+        return;
+      }
+      
+      if (file.type !== 'application/pdf') {
+        alert('Please select a PDF file');
+        return;
+      }
+
+      setCvFile(file);
+    }
+  };
+
   const uploadPhoto = async (studentId: string): Promise<string> => {
     if (!photoFile) return formData.profilePhotoUrl;
 
@@ -99,6 +126,26 @@ const StudentFormPage: React.FC = () => {
     } catch (err) {
       console.error('Error uploading photo:', err);
       throw new Error('Failed to upload photo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const uploadCv = async (studentId: string): Promise<string> => {
+    if (!cvFile) return formData.cvUrl;
+
+    setUploading(true);
+    try {
+      const fileName = `students/${studentId}/cv.pdf`;
+      const storageRef = ref(storage, fileName);
+
+      await uploadBytes(storageRef, cvFile);
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      return downloadURL;
+    } catch (err) {
+      console.error('Error uploading CV:', err);
+      throw new Error('Failed to upload CV');
     } finally {
       setUploading(false);
     }
@@ -137,12 +184,19 @@ const StudentFormPage: React.FC = () => {
         profilePhotoUrl = await uploadPhoto(studentId);
       }
 
+      // Upload CV or use link
+      let cvUrl = formData.cvUrl;
+      if (cvType === 'upload' && cvFile) {
+        cvUrl = await uploadCv(studentId);
+      }
+
       const studentData = {
         email: formData.email,
         password: formData.password,
         fullName: formData.fullName,
         major: formData.major,
         profilePhotoUrl,
+        cvUrl,
         status: formData.status,
       };
 
@@ -310,6 +364,66 @@ const StudentFormPage: React.FC = () => {
                 <option value="inactive">Inactive</option>
               </select>
             </div>
+          </div>
+
+          {/* CV Section */}
+          <div className={styles.cvSection}>
+            <label className={styles.label}>📄 CV / Resume</label>
+            <div className={styles.cvTypeSelector}>
+              <button
+                type="button"
+                className={`${styles.typeButton} ${cvType === 'upload' ? styles.active : ''}`}
+                onClick={() => setCvType('upload')}
+              >
+                <Upload size={18} />
+                Upload PDF
+              </button>
+              <button
+                type="button"
+                className={`${styles.typeButton} ${cvType === 'link' ? styles.active : ''}`}
+                onClick={() => setCvType('link')}
+              >
+                Link
+              </button>
+            </div>
+
+            {cvType === 'upload' ? (
+              <div className={styles.cvUpload}>
+                <label htmlFor="cv" className={styles.cvLabel}>
+                  <Upload size={24} />
+                  <span>{cvFile ? cvFile.name : 'Choose PDF file'}</span>
+                  <span className={styles.uploadHint}>PDF up to 5MB</span>
+                </label>
+                <input
+                  type="file"
+                  id="cv"
+                  accept=".pdf"
+                  onChange={handleCvChange}
+                  className={styles.fileInput}
+                />
+                {formData.cvUrl && !cvFile && (
+                  <a href={formData.cvUrl} target="_blank" rel="noopener noreferrer" className={styles.cvLink}>
+                    View current CV
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div className={styles.formGroup}>
+                <input
+                  type="url"
+                  name="cvUrl"
+                  value={formData.cvUrl}
+                  onChange={handleChange}
+                  className={styles.input}
+                  placeholder="https://drive.google.com/... or https://..."
+                />
+                {formData.cvUrl && (
+                  <a href={formData.cvUrl} target="_blank" rel="noopener noreferrer" className={styles.cvLink}>
+                    View CV Link →
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.actions}>

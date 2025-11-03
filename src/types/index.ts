@@ -116,6 +116,10 @@ export interface DashboardStats {
   acceptedApplications: number;
   rejectedApplications: number;
   recentApplications: number;
+  totalEnrollments: number;
+  pendingEnrollments: number;
+  acceptedEnrollments: number;
+  rejectedEnrollments: number;
   recentActivities: RecentActivity[];
   applicationTrends: number[];
   trendLabels: string[];

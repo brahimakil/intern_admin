@@ -16,6 +16,8 @@ import StudentDetailsPage from './pages/StudentDetailsPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import ApplicationFormPage from './pages/ApplicationFormPage';
 import CompanyInternshipsPage from './pages/CompanyInternshipsPage';
+import EnrollmentsPage from './pages/EnrollmentsPage';
+import EnrollmentFormPage from './pages/EnrollmentFormPage';
 
 /**
  * Main App Component
@@ -159,6 +161,32 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <ApplicationFormPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Enrollments Management */}
+          <Route
+            path="/enrollments"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <EnrollmentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/enrollments/add"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <EnrollmentFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/enrollments/edit/:id"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <EnrollmentFormPage />
               </ProtectedRoute>
             }
           />

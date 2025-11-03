@@ -18,7 +18,8 @@ interface Internship {
   location: string;
   locationType: 'remote' | 'onsite' | 'hybrid';
   status: 'open' | 'closed';
-  applicantsCount?: number;
+  applicationsCount?: number;
+  currentStudentsCount?: number;
   createdAt: any;
 }
 
@@ -155,7 +156,13 @@ const InternshipsPage: React.FC = () => {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>Total Applications</span>
             <span className={styles.statValue}>
-              {internships.reduce((sum, i) => sum + (i.applicantsCount || 0), 0)}
+              {internships.reduce((sum, i) => sum + (i.applicationsCount || 0), 0)}
+            </span>
+          </div>
+          <div className={styles.statCard}>
+            <span className={styles.statLabel}>Total Students</span>
+            <span className={styles.statValue}>
+              {internships.reduce((sum, i) => sum + (i.currentStudentsCount || 0), 0)}
             </span>
           </div>
         </div>
@@ -201,7 +208,8 @@ const InternshipsPage: React.FC = () => {
                   <th>Duration</th>
                   <th>Location</th>
                   <th>Status</th>
-                  <th>Applicants</th>
+                  <th>Applications</th>
+                  <th>Students</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -258,7 +266,12 @@ const InternshipsPage: React.FC = () => {
                     </td>
                     <td>
                       <span className={styles.applicantsBadge}>
-                        {internship.applicantsCount || 0}
+                        {internship.applicationsCount || 0}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={styles.applicantsBadge}>
+                        {internship.currentStudentsCount || 0}
                       </span>
                     </td>
                     <td>

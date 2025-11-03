@@ -26,6 +26,10 @@ const DashboardPage: React.FC = () => {
     acceptedApplications: 0,
     rejectedApplications: 0,
     recentApplications: 0,
+    totalEnrollments: 0,
+    pendingEnrollments: 0,
+    acceptedEnrollments: 0,
+    rejectedEnrollments: 0,
     recentActivities: [],
     applicationTrends: [0, 0, 0, 0, 0],
     trendLabels: [],
@@ -245,6 +249,88 @@ const DashboardPage: React.FC = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Enrollment Status Cards */}
+        <div className={styles.statusSection}>
+          <h2 className={styles.sectionTitle}>👥 Enrollment Status</h2>
+          <div className={styles.statusGrid}>
+            <div className={styles.statusCard}>
+              {loading ? (
+                <div className={styles.skeleton}></div>
+              ) : (
+                <>
+                  <div 
+                    className={styles.statusIcon}
+                    style={{ backgroundColor: '#dbeafe' }}
+                  >
+                    <Users size={24} style={{ color: '#3b82f6' }} />
+                  </div>
+                  <div className={styles.statusInfo}>
+                    <p className={styles.statusValue}>{stats.totalEnrollments}</p>
+                    <p className={styles.statusTitle}>Total Enrollments</p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className={styles.statusCard}>
+              {loading ? (
+                <div className={styles.skeleton}></div>
+              ) : (
+                <>
+                  <div 
+                    className={styles.statusIcon}
+                    style={{ backgroundColor: '#fef3c7' }}
+                  >
+                    <Clock size={24} style={{ color: '#f59e0b' }} />
+                  </div>
+                  <div className={styles.statusInfo}>
+                    <p className={styles.statusValue}>{stats.pendingEnrollments}</p>
+                    <p className={styles.statusTitle}>Pending</p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className={styles.statusCard}>
+              {loading ? (
+                <div className={styles.skeleton}></div>
+              ) : (
+                <>
+                  <div 
+                    className={styles.statusIcon}
+                    style={{ backgroundColor: '#d1fae5' }}
+                  >
+                    <CheckCircle size={24} style={{ color: '#10b981' }} />
+                  </div>
+                  <div className={styles.statusInfo}>
+                    <p className={styles.statusValue}>{stats.acceptedEnrollments}</p>
+                    <p className={styles.statusTitle}>Accepted</p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className={styles.statusCard}>
+              {loading ? (
+                <div className={styles.skeleton}></div>
+              ) : (
+                <>
+                  <div 
+                    className={styles.statusIcon}
+                    style={{ backgroundColor: '#fee2e2' }}
+                  >
+                    <XCircle size={24} style={{ color: '#ef4444' }} />
+                  </div>
+                  <div className={styles.statusInfo}>
+                    <p className={styles.statusValue}>{stats.rejectedEnrollments}</p>
+                    <p className={styles.statusTitle}>Rejected</p>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 

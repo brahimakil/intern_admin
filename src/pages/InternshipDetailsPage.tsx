@@ -38,7 +38,8 @@ const InternshipDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [internship, setInternship] = useState<InternshipDetails | null>(null);
-  const [applicantsCount, setApplicantsCount] = useState(0);
+  const [applicationsCount, setApplicationsCount] = useState(0);
+  const [currentStudentsCount, setCurrentStudentsCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -61,7 +62,8 @@ const InternshipDetailsPage: React.FC = () => {
         return;
       }
 
-      setApplicantsCount(data.applicantsCount || 0);
+      setApplicationsCount(data.applicationsCount || 0);
+      setCurrentStudentsCount(data.currentStudentsCount || 0);
       setInternship({
         id: data.id,
         title: data.title,
@@ -103,12 +105,33 @@ const InternshipDetailsPage: React.FC = () => {
 
   const formatDate = (timestamp: any) => {
     if (!timestamp) return 'N/A';
-    const date = timestamp.toDate();
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    
+    try {
+      // Handle Firestore Timestamp object
+      if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+        const date = timestamp.toDate();
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+      }
+      
+      // Handle ISO string or regular Date
+      const date = new Date(timestamp);
+      if (isNaN(date.getTime())) {
+        return 'N/A';
+      }
+      
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch (err) {
+      console.error('Error formatting date:', err);
+      return 'N/A';
+    }
   };
 
   if (loading) {
@@ -224,8 +247,16 @@ const InternshipDetailsPage: React.FC = () => {
           <div className={styles.statCard}>
             <Users size={24} />
             <div>
-              <span className={styles.statLabel}>Applicants</span>
-              <span className={styles.statValue}>{applicantsCount}</span>
+              <span className={styles.statLabel}>Applications</span>
+              <span className={styles.statValue}>{applicationsCount}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <Users size={24} />
+            <div>
+              <span className={styles.statLabel}>Current Students</span>
+              <span className={styles.statValue}>{currentStudentsCount}</span>
             </div>
           </div>
 

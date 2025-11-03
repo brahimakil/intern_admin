@@ -21,6 +21,7 @@ interface StudentDetails {
   fullName: string;
   major: string;
   profilePhotoUrl?: string;
+  cvUrl?: string;
   status: 'active' | 'inactive';
   createdAt: any;
   updatedAt: any;
@@ -60,6 +61,7 @@ const StudentDetailsPage: React.FC = () => {
         fullName: data.fullName,
         major: data.major,
         profilePhotoUrl: data.profilePhotoUrl,
+        cvUrl: data.cvUrl,
         status: data.status,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
@@ -259,6 +261,22 @@ const StudentDetailsPage: React.FC = () => {
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Major:</span>
                 <span className={styles.infoValue}>{student.major}</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.infoLabel}>CV/Resume:</span>
+                {student.cvUrl ? (
+                  <a 
+                    href={student.cvUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.cvLink}
+                  >
+                    <FileText size={16} />
+                    View CV
+                  </a>
+                ) : (
+                  <span className={styles.infoValue}>Not uploaded</span>
+                )}
               </div>
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Account Status:</span>

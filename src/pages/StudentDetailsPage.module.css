@@ -291,6 +291,20 @@
   font-weight: 500;
 }
 
+.cvLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #8b5cf6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.cvLink:hover {
+  color: #7c3aed;
+}
+
 /* Applications Section */
 .applicationsInfo {
   display: flex;
