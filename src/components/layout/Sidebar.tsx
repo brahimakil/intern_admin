@@ -7,7 +7,7 @@ import {
   Briefcase,
   Users,
   UserCheck,
-  FileText, 
+  // FileText, 
   LogOut
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
