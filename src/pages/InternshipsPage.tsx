@@ -13,6 +13,7 @@ interface Internship {
   companyId: string;
   companyName: string;
   companyLogo?: string;
+  logoUrl?: string;
   requiredSkills: string[];
   duration: string;
   location: string;
@@ -202,6 +203,7 @@ const InternshipsPage: React.FC = () => {
             <table className={styles.table}>
               <thead>
                 <tr>
+                  <th>Logo</th>
                   <th>Title</th>
                   <th>Company</th>
                   <th>Required Skills</th>
@@ -216,6 +218,21 @@ const InternshipsPage: React.FC = () => {
               <tbody>
                 {filteredInternships.map((internship) => (
                   <tr key={internship.id}>
+                    <td>
+                      <div className={styles.logoCell}>
+                        {internship.logoUrl ? (
+                          <img 
+                            src={internship.logoUrl} 
+                            alt={internship.title}
+                            className={styles.internshipLogo}
+                          />
+                        ) : (
+                          <div className={styles.internshipPlaceholder}>
+                            <Briefcase size={20} />
+                          </div>
+                        )}
+                      </div>
+                    </td>
                     <td>
                       <div className={styles.titleCell}>
                         <span className={styles.internshipTitle}>{internship.title}</span>

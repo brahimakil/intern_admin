@@ -40,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { name: 'Internships', icon: Briefcase, path: '/internships' },
     { name: 'Students', icon: Users, path: '/students' },
     { name: 'Enrollments', icon: UserCheck, path: '/enrollments' },
-    { name: 'Applications', icon: FileText, path: '/applications' },
+    // { name: 'Applications', icon: FileText, path: '/applications' },
   ];
 
   return (

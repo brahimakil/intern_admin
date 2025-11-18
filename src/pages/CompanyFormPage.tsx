@@ -22,6 +22,7 @@ const CompanyFormPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    password: '',
     industry: '',
     location: '',
     description: '',
@@ -42,6 +43,7 @@ const CompanyFormPage: React.FC = () => {
       setFormData({
         name: data.name || '',
         email: data.email || '',
+        password: '',
         industry: data.industry || '',
         location: data.location || '',
         description: data.description || '',
@@ -236,6 +238,28 @@ const CompanyFormPage: React.FC = () => {
                 required
                 disabled={isEdit}
               />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.label}>
+                Password {!isEdit && '*'}
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder={isEdit ? "Leave blank to keep current password" : "Min. 6 characters"}
+                required={!isEdit}
+                minLength={6}
+              />
+              {isEdit && (
+                <small style={{ color: '#666', fontSize: '0.85rem' }}>
+                  Leave blank to keep the current password
+                </small>
+              )}
             </div>
 
             <div className={styles.formGroup}>

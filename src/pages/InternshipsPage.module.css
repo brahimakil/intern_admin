@@ -323,6 +323,32 @@
   flex-shrink: 0;
 }
 
+.logoCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.internshipLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+
+.internshipPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.5rem;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+}
+
 .skillsCell {
   display: flex;
   flex-wrap: wrap;
