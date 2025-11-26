@@ -25,14 +25,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     // Listen to Firebase authentication state changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser && firebaseUser.email) {
+      if (firebaseUser) {
         try {
-          // Fetch user role from Firestore
-          const userDocRef = doc(db, 'users', firebaseUser.email);
-          const userDoc = await getDoc(userDocRef);
+          // Try fetching by UID first (backend created users)
+          let userDocRef = doc(db, 'users', firebaseUser.uid);
+          let userDoc = await getDoc(userDocRef);
+
+          // If not found, try by email (frontend created users - legacy)
+          if (!userDoc.exists() && firebaseUser.email) {
+            userDocRef = doc(db, 'users', firebaseUser.email);
+            userDoc = await getDoc(userDocRef);
+          }
           
           if (userDoc.exists()) {
             const data = userDoc.data();
+            
+            // Check if user is inactive - logout immediately
+            if (data.status === 'inactive') {
+              await logoutUser();
+              setUser(null);
+              setRole(null);
+              setLoading(false);
+              return;
+            }
+            
             const userData: User = {
               uid: firebaseUser.uid,
               email: data.email,
@@ -70,27 +86,63 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await loginWithEmail(email, password);
       
-      // Fetch user role from Firestore
-      const userDocRef = doc(db, 'users', email);
-      const userDoc = await getDoc(userDocRef);
+      const uid = auth.currentUser!.uid;
       
+      // Try fetching by UID first (backend created users)
+      let userDocRef = doc(db, 'users', uid);
+      let userDoc = await getDoc(userDocRef);
+      
+      // If not found, try by email (frontend created users - legacy)
       if (!userDoc.exists()) {
-        throw new Error('User data not found');
+        userDocRef = doc(db, 'users', email);
+        userDoc = await getDoc(userDocRef);
       }
       
-      const data = userDoc.data();
-      const userData: User = {
-        uid: auth.currentUser!.uid,
-        email: data.email,
-        role: data.role,
-        createdAt: data.createdAt?.toDate() || new Date(),
-      };
-      
-      setUser(userData);
-      setRole(data.role);
-      
-      return userData;
+      if (userDoc.exists()) {
+        // User document exists - use the data from Firestore
+        const data = userDoc.data();
+        
+        console.log('User data from Firestore:', data);
+        console.log('Status field:', data.status);
+        
+        // Check if user is inactive - LOGOUT AND REJECT IMMEDIATELY
+        if (data.status && data.status === 'inactive') {
+          console.log('User is INACTIVE - logging out');
+          await logoutUser();
+          setUser(null);
+          setRole(null);
+          throw new Error('Your account has been deactivated.');
+        }
+        
+        console.log('User is active or no status field - allowing login');
+        
+        const userData: User = {
+          uid: uid,
+          email: data.email,
+          role: data.role,
+          createdAt: data.createdAt?.toDate() || new Date(),
+        };
+        
+        setUser(userData);
+        setRole(userData.role);
+        
+        return userData;
+      } else {
+        // User document doesn't exist - allow login with default admin role
+        const userData: User = {
+          uid: uid,
+          email: email,
+          role: 'admin',
+          createdAt: new Date(),
+        };
+        
+        setUser(userData);
+        setRole(userData.role);
+        
+        return userData;
+      }
     } catch (error) {
+      console.error('Login error:', error);
       throw error;
     }
   };

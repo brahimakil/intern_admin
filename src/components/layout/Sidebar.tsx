@@ -7,6 +7,7 @@ import {
   Briefcase,
   Users,
   UserCheck,
+  UserCog,
   // FileText, 
   LogOut
 } from 'lucide-react';
@@ -40,6 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { name: 'Internships', icon: Briefcase, path: '/internships' },
     { name: 'Students', icon: Users, path: '/students' },
     { name: 'Enrollments', icon: UserCheck, path: '/enrollments' },
+    { name: 'Admins', icon: UserCog, path: '/admins' },
     // { name: 'Applications', icon: FileText, path: '/applications' },
   ];
 

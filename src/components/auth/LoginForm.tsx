@@ -121,13 +121,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, error, loading }) => {
         </div>
       )}
 
-      {/* Forgot Password Link */}
-      <div className={styles.forgotPassword}>
-        <a href="#" className={styles.link}>
-          Forgot password?
-        </a>
-      </div>
-
       {/* Submit Button */}
       <button
         type="submit"

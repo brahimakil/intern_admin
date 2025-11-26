@@ -1,6 +1,6 @@
 // Login page component
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LoginForm from '../components/auth/LoginForm';
 import styles from './LoginPage.module.css';
@@ -60,14 +60,14 @@ const LoginPage: React.FC = () => {
           loading={loading}
         />
 
-        <div className={styles.footer}>
+        {/* <div className={styles.footer}>
           <p className={styles.footerText}>
             Don't have an account?{' '}
             <Link to="/register" className={styles.footerLink}>
               Create one
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import CompaniesPage from './pages/CompaniesPage';
 import CompanyFormPage from './pages/CompanyFormPage';
@@ -18,6 +17,8 @@ import ApplicationFormPage from './pages/ApplicationFormPage';
 import CompanyInternshipsPage from './pages/CompanyInternshipsPage';
 import EnrollmentsPage from './pages/EnrollmentsPage';
 import EnrollmentFormPage from './pages/EnrollmentFormPage';
+import AdminsPage from './pages/AdminsPage';
+import AdminFormPage from './pages/AdminFormPage';
 
 /**
  * Main App Component
@@ -30,7 +31,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          {/* <Route path="/register" element={<RegisterPage />} /> */}
 
           {/* Admin Routes */}
           <Route
@@ -187,6 +188,32 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <EnrollmentFormPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admins Management */}
+          <Route
+            path="/admins"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admins/add"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admins/edit/:id"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminFormPage />
               </ProtectedRoute>
             }
           />

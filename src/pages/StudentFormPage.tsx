@@ -136,15 +136,21 @@ const StudentFormPage: React.FC = () => {
 
     setUploading(true);
     try {
+      console.log('Uploading CV for student:', studentId);
       const fileName = `students/${studentId}/cv.pdf`;
       const storageRef = ref(storage, fileName);
 
+      console.log('Storage ref created:', fileName);
       await uploadBytes(storageRef, cvFile);
+      console.log('CV uploaded successfully');
+      
       const downloadURL = await getDownloadURL(storageRef);
+      console.log('Download URL retrieved:', downloadURL);
       
       return downloadURL;
     } catch (err) {
       console.error('Error uploading CV:', err);
+      alert(`Failed to upload CV: ${err.message || err}`);
       throw new Error('Failed to upload CV');
     } finally {
       setUploading(false);

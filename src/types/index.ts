@@ -45,6 +45,15 @@ export interface Student {
   createdAt: Date;
 }
 
+export interface Admin {
+  id: string;
+  email: string;
+  fullName: string;
+  status: 'active' | 'inactive';
+  role: 'admin';
+  createdAt: Date;
+}
+
 export interface Application {
   id: string;
   studentId: string;
