@@ -60,14 +60,6 @@ const LoginPage: React.FC = () => {
           loading={loading}
         />
 
-        {/* <div className={styles.footer}>
-          <p className={styles.footerText}>
-            Don't have an account?{' '}
-            <Link to="/register" className={styles.footerLink}>
-              Create one
-            </Link>
-          </p>
-        </div> */}
       </div>
     </div>
   );
