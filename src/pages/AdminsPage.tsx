@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import { apiService } from '../services/api';
-import { UserCog, Plus, Edit, Trash2, Search, Filter } from 'lucide-react';
+import { UserCog, Plus, Edit, Trash2, Search } from 'lucide-react';
 import styles from './AdminsPage.module.css';
 
 interface Admin {

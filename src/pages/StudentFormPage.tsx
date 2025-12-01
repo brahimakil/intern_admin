@@ -150,7 +150,7 @@ const StudentFormPage: React.FC = () => {
       return downloadURL;
     } catch (err) {
       console.error('Error uploading CV:', err);
-      alert(`Failed to upload CV: ${err.message || err}`);
+      alert(`Failed to upload CV: ${(err as Error).message || err}`);
       throw new Error('Failed to upload CV');
     } finally {
       setUploading(false);
