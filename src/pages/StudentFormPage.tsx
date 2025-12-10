@@ -1,7 +1,7 @@
 // Add/Edit Student Form Page
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase/config';
 import { apiService } from '../services/api';
 import { ArrowLeft, Users, Upload, X } from 'lucide-react';
@@ -116,18 +116,9 @@ const StudentFormPage: React.FC = () => {
     setUploading(true);
     try {
       const fileExtension = photoFile.name.split('.').pop();
-      const fileName = `students/${studentId}/profile.${fileExtension}`;
+      const timestamp = Date.now();
+      const fileName = `students/${studentId}/profile_${timestamp}.${fileExtension}`;
       const storageRef = ref(storage, fileName);
-
-      // Try to delete existing file first to avoid 412 errors
-      try {
-        await deleteObject(storageRef);
-      } catch (error: any) {
-        // Ignore error if file doesn't exist
-        if (error.code !== 'storage/object-not-found') {
-          console.warn('Error deleting existing photo:', error);
-        }
-      }
 
       await uploadBytes(storageRef, photoFile);
       const downloadURL = await getDownloadURL(storageRef);
@@ -147,18 +138,9 @@ const StudentFormPage: React.FC = () => {
     setUploading(true);
     try {
       console.log('Uploading CV for student:', studentId);
-      const fileName = `students/${studentId}/cv.pdf`;
+      const timestamp = Date.now();
+      const fileName = `students/${studentId}/cv_${timestamp}.pdf`;
       const storageRef = ref(storage, fileName);
-
-      // Try to delete existing file first to avoid 412 errors
-      try {
-        await deleteObject(storageRef);
-      } catch (error: any) {
-        // Ignore error if file doesn't exist
-        if (error.code !== 'storage/object-not-found') {
-          console.warn('Error deleting existing CV:', error);
-        }
-      }
 
       console.log('Storage ref created:', fileName);
       await uploadBytes(storageRef, cvFile);
